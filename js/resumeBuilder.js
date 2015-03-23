@@ -3,23 +3,42 @@ var bio = {
 	"name": "Alexei",
 	"role": "Web Developer",
 	"contacts": {
-		"phone": "777-777-7777",
-		"email": "fakeymcfakerson@yahoo.com"
+		"mobile": "777-777-7777",
+		"email": "fakeymcfakerson@yahoo.com",
+		"twitter": "twitter.com/fakeymcfakerson",
+		"location": "60102 Illinois"
 	},
-	"biopic": "https://lh6.googleusercontent.com/-j4mAvBrzA3s/UWxLaJqNpMI/AAAAAAAAAB0/6TLHY-IgfPk/s622-no/gavatar.png",
-	"welcome_message": "Thanks for stopping by! Feel free to look around.",
+	"bioPic": "https://lh6.googleusercontent.com/-j4mAvBrzA3s/UWxLaJqNpMI/AAAAAAAAAB0/6TLHY-IgfPk/s622-no/gavatar.png",
+	"WelcomeMsg": "Thanks for stopping by! Feel free to look around.",
 	"skills" : ["HTML","Javascript","Smiling"]
 }
 
 bio.display = function () {
-	// display bio info
+	var formattedRole = HTMLheaderRole.replace("%data%",bio.role);
+	$("#header").prepend(formattedRole);
+
+	var formattedName = HTMLheaderName.replace("%data%", bio.name);
+	$("#header").prepend(formattedName);
+
+	for (var i in bio.contacts) {
+		if (window["HTML" + i]) {
+			$("#topContacts").append(window["HTML" + i].replace("%data%",bio.contacts[i]));
+		}
+	}
+
+	var formattedBioPic = HTMLbioPic.replace("%data%", bio.bioPic);
+	$("#header").append(formattedBioPic);
+
+	var formattedWelcomeMsg = HTMLWelcomeMsg.replace("%data%", bio.WelcomeMsg);
+	$("#header").append(formattedWelcomeMsg);
 };
+
 
 var education = {
 	"schools" : [
 		{
 			"name": "YUI",
-			"location": "Jersey",
+			"location": "28012 NC",
 			"degree": "none",
 			"majors": ["Tom Foolery"],
 			"dates": "A long time ago",
@@ -43,7 +62,18 @@ var education = {
 }
 
 education.display = function () {
-	// display education info
+
+	for (var i in education.schools) {
+		$("#education").append(HTMLschoolStart);
+		for (var c in education.schools[i]) {
+			console.log(c);
+			var key = c.slice(0,1).toUpperCase() + c.slice(1).toLowerCase();
+			if (window["HTMLschool" + key]) {
+				$(".education-entry:last").append(window["HTMLschool" + key].replace("%data%",education.schools[i][c]));
+			}
+		}
+	}
+
 };
 
 var work =  {
@@ -66,10 +96,18 @@ var work =  {
 }
 
 work.display = function () {
-	// display work info
+	for (var i in work.jobs) {
+		$("#workExperience").append(HTMLworkStart);
+		for (var c in work.jobs[i]) {
+			var key = c.slice(0,1).toUpperCase() + c.slice(1).toLowerCase();
+			if (window["HTMLwork" + key]) {
+				$(".work-entry:last").append(window["HTMLwork" + key].replace("%data%",work.jobs[i][c]));
+			}
+		}
+	}
 };
 
-var projects {
+var projects = {
 	"projects": [
 		{
 			"title": "CW website launch",
@@ -95,5 +133,29 @@ var projects {
 }
 
 projects.display = function () {
-	// display projects info
+	for (var i in projects.projects) {
+		$("#projects").append(HTMLprojectStart);
+		for (var c in projects.projects[i]) {
+			var key = c.slice(0,1).toUpperCase() + c.slice(1).toLowerCase();
+			if (window["HTMLproject" + key]) {
+				$(".project-entry:last").append(window["HTMLproject" + key].replace("%data%",projects.projects[i][c]));
+			}
+		}
+		// insert images
+		for (var t in projects.projects[i].images){
+			var img = projects.projects[i].images[t];
+			$(".project-entry:last").append(HTMLprojectImage.replace('%data%',img));
+		}
+	}
 }
+
+
+// Display All
+bio.display();
+education.display();
+work.display();
+projects.display();
+
+// Append Google Map
+
+$("#mapDiv").append(googleMap);
